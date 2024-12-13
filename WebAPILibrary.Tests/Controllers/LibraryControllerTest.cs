@@ -31,7 +31,7 @@ public class LibraryControllerTests
         Assert.NotNull(result);
         Assert.Equal(200, result.StatusCode);
     }
-
+    
     [Fact]
     public void GetOutstandingFees_UserExists_ReturnsCorrectFees()
     {
@@ -276,7 +276,7 @@ public class LibraryControllerTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(500, result.StatusCode); // Internal Server Error
+        Assert.Equal(500, result.StatusCode);
     }
 
     [Fact]

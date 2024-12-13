@@ -10,10 +10,8 @@ namespace WebAPILibrary
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
-            builder.Services.AddScoped<ILibraryService, LibraryService>(); // Register your service here
+            builder.Services.AddScoped<ILibraryService, LibraryService>();
 
             builder.Services.AddDbContext<ProjectContext>(options =>
             {
@@ -23,14 +21,12 @@ namespace WebAPILibrary
 
             var app = builder.Build();
 
-            // Seed the database if it has just been created
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 Seed(services);
             }
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

@@ -192,14 +192,12 @@ namespace WebAPILibrary.Services
 
         public Dictionary<string, string> CheckOutBooks(int userId, List<string> bookIds)
         {
-            // Validate user
             var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
             if (user == null)
             {
                 throw new ArgumentException("User not found.");
             }
 
-            // Create a dictionary to store the results for each book
             var results = new Dictionary<string, string>();
 
             foreach (var bookId in bookIds)

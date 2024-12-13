@@ -542,13 +542,12 @@ public class LibraryServiceTests
             context.Users.Add(new User { Id = 1, Name = "John", FirstName = "Doe", Fees = 0 });
             context.Books.Add(new Book { Id = "123", Title = "Test Book", BorrowingDays = 14, FeePrice = 2.5m, Available = false });
 
-            // Add initial checkout transaction
             context.LibraryTransactions.Add(new LibraryTransaction
             {
                 UserId = 1,
                 BookId = "123",
                 TransactionType = "Checkout",
-                Date = DateTime.Now.AddDays(-14) // Checked out 14 days ago
+                Date = DateTime.Now.AddDays(-28) // Checked out 14 days ago
             });
 
             // Add renewal transaction
@@ -557,7 +556,7 @@ public class LibraryServiceTests
                 UserId = 1,
                 BookId = "123",
                 TransactionType = "Renew",
-                Date = DateTime.Now.AddDays(-7) // Renewed 7 days ago
+                Date = DateTime.Now.AddDays(-14) 
             });
 
             context.SaveChanges();
@@ -575,7 +574,7 @@ public class LibraryServiceTests
 
             var user = context.Users.FirstOrDefault(u => u.Id == 1);
             Assert.NotNull(user);
-            Assert.Equal(0m, user.Fees); // No late fees
+            Assert.Equal(0m, user.Fees);
         }
     }
 
@@ -591,8 +590,7 @@ public class LibraryServiceTests
         {
             context.Users.Add(new User { Id = 1, Name = "John", FirstName = "Doe", Fees = 0 });
             context.Books.Add(new Book { Id = "123", Title = "Test Book", BorrowingDays = 14, FeePrice = 2.5m, Available = false });
-
-            // Add initial checkout transaction
+            
             context.LibraryTransactions.Add(new LibraryTransaction
             {
                 UserId = 1,
@@ -601,7 +599,6 @@ public class LibraryServiceTests
                 Date = DateTime.Now.AddDays(-42)
             });
 
-            // Add renewal transaction
             context.LibraryTransactions.Add(new LibraryTransaction
             {
                 UserId = 1,
@@ -660,7 +657,7 @@ public class LibraryServiceTests
             // Assert
             Assert.NotNull(transactions);
             Assert.Equal(2, transactions.Count);
-            Assert.True(transactions[0].Date > transactions[1].Date); // Sorted by date descending
+            Assert.True(transactions[0].Date > transactions[1].Date);
         }
     }
 
@@ -687,7 +684,7 @@ public class LibraryServiceTests
 
             // Assert
             Assert.NotNull(transactions);
-            Assert.Empty(transactions); // Should return an empty list
+            Assert.Empty(transactions);
         }
     }
 
@@ -787,7 +784,7 @@ public class LibraryServiceTests
                 Id = 1,
                 Name = "John",
                 FirstName = "Doe",
-                Fees = 25.00m // Outstanding fees
+                Fees = 25.00m
             });
             context.SaveChanges();
         }
@@ -1093,7 +1090,7 @@ public class LibraryServiceTests
         using (var context = new ProjectContext(options))
         {
             var libraryService = new LibraryService(context);
-            var bookIds = new List<string>(); // Empty list
+            var bookIds = new List<string>();
 
             // Act
             var results = libraryService.CheckOutBooks(1, bookIds);
