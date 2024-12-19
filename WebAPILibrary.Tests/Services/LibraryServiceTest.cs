@@ -797,7 +797,7 @@ public class LibraryServiceTests
             var result = libraryService.ProcessFeePayment(1, 20.00m);
 
             // Assert
-            Assert.Equal("Payment failed: Payment amount does not match the outstanding fees. Outstanding Fees: 25.00", result);
+            Assert.Equal("Payment failed: Payment amount does not match the outstanding fees. Outstanding Fees: 25,00", result);
 
             var user = context.Users.FirstOrDefault(u => u.Id == 1);
             Assert.NotNull(user);
