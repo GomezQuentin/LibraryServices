@@ -1,34 +1,23 @@
-Test are separeted in 2 parts :
-controllers :
-Function in Controller :
-Single Responsibility Principle: The controller's responsibility is to handle HTTP requests and responses, not to validate or calculate business logic  business logic should be check in my service
+# LibraryServices Project
 
-Services :
-buisness logic 
+Welcome to the **LibraryServices** project! This application is designed to manage library services such as book checkouts, returns, renewals, and fee processing.
 
+## Features
 
+- **User Management**: Handles user-related operations, including outstanding fee calculations and payments.
+- **Book Management**: Allows for book checkouts, returns, and renewals.
+- **Transaction Tracking**: Logs library transactions, such as checkouts and returns, for auditing and reporting purposes.
+- **Fee Processing**: Calculates and processes overdue fees based on borrowing terms.
 
-Responsibilities:
-•	Manage library services including book check-out, late fee payments, and library account management. 
-•	Integrate with the university library system to track book availability and user activity. 
+## Getting Started
 
-Key Features:
-1.	Book Check-Out and Return: Allow users to check out and return books using their service card. 
-2.	Late Fee Payments: Process payments for overdue books directly through the service card. 	
-3.	Account Management: Provide users with the ability to view their library account details, including borrowed books and outstanding fees. 
+To get started with the project, follow these steps:
 
-Challenges for Unit Testing:
-•	Mocking interactions with the library database and tracking systems. 
-•	Ensuring accurate fee calculations and payment processing. 
-•	Testing edge cases like book renewals, multiple check-outs, and fee waivers.
-
-Class :
-user : Id, name, firstname, fees
-Book : Id, Title, feePrice, BorrowingDay(How many days you can borrow this book), available
-LibraryTransaction : Id, UserId, BookId, TransactionType(Checkout, Return) Date
-
-ILibraryService :
-    bool CheckOutBook(int userId, string bookId); : faire le checkout d’un livre
-    bool ReturnBook(int userId, string bookId); : faire le retour d’un book
-    decimal GetOutstandingFees(int userId); : recevoir les coûts d’amande
-    List<LibraryTransaction> GetUserLibraryTransactions(int userId); : recevoir toutes les transactions d’un user
+1. **Clone the Repository**  
+   Open your terminal and run the following command to clone the project repository to your local machine:
+   git clone https://github.com/GomezQuentin/LibraryServices.git
+2. **Open the Solution**  
+   Navigate to the folder where the repository was cloned, then open the LibraryServices.sln solution file using Visual Studio.
+3. **Run the API**  
+   Once the solution is loaded in Visual Studio, run the API. The database will be automatically populated with initial data, allowing you to test the application     
+   functionalities right away.
