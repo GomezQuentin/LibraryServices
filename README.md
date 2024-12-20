@@ -23,4 +23,4 @@ To get started with the project, follow these steps:
    functionalities right away.
 
 ## Documentation
-For a detailed explanation of the project's functionality, design decisions, and test-driven development (TDD) approach, refer to the TDDDocumentation.pdf file included in the repository.
+For a detailed explanation of the project's functionality, design decisions, and test-driven development (TDD) approach, refer to the TDD05Documentation.pdf file included in the repository.
