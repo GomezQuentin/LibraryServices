@@ -38,19 +38,15 @@ namespace WebAPILibrary.Controllers
             try
             {
                 var result = _libraryService.CheckOutBook(userId, bookId);
-
-                if (result)
-                {
-                    return Ok(new { Message = "Book checked out successfully." });
-                }
-                else
-                {
-                    return BadRequest(new { Message = "Book could not be checked out." });
-                }
+                return Ok(new { Message = "Book checked out successfully." });
+            }
+            catch (ArgumentException ex) when (ex.Message == "Invalid userId or bookId")
+            {
+                return NotFound(new { Message = ex.Message });
             }
             catch (ArgumentException ex)
             {
-                return NotFound(new { Message = ex.Message });
+                return BadRequest(new { Message = ex.Message });
             }
             catch (Exception)
             {
@@ -64,15 +60,8 @@ namespace WebAPILibrary.Controllers
             try
             {
                 var result = _libraryService.ReturnBook(userId, bookId);
-
-                if (result)
-                {
-                    return Ok(new { Message = "Book returned successfully." });
-                }
-                else
-                {
-                    return BadRequest(new { Message = "Book could not be returned." });
-                }
+                return Ok(new { Message = "Book returned successfully." });
+                
             }
             catch (ArgumentException ex)
             {
@@ -176,20 +165,15 @@ namespace WebAPILibrary.Controllers
         {
             try
             {
-                // Call the service method to process the multiple check-outs
                 var results = _libraryService.CheckOutBooks(userId, bookIds);
-
-                // Return the results as a 200 OK response
                 return Ok(new { UserId = userId, Results = results });
             }
             catch (ArgumentException ex) when (ex.Message == "User not found.")
             {
-                // Handle user not found error
                 return NotFound(new { Message = ex.Message });
             }
             catch (Exception)
             {
-                // Handle unexpected errors
                 return StatusCode(500, new { Message = "An internal error occurred. Please try again later." });
             }
         }

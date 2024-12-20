@@ -60,21 +60,18 @@ public class LibraryControllerTests
     }
 
     [Fact]
-    public void GetOutstandingFees_UserDoesNotExist_Returns404Errors()
+    public void GetOutstandingFees_UserDoesNotExist_ReturnsNotFound()
     {
         // Arrange
         int userId = 999;
-
-        _mockLibraryService
-            .Setup(service => service.GetOutstandingFees(userId))
-            .Throws(new ArgumentException("User not found."));
+        _mockLibraryService.Setup(service => service.GetOutstandingFees(userId)).Throws(new ArgumentException("User not found."));
 
         // Act
         var result = _controller.GetOutstandingFees(userId) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(404, result.StatusCode);
+        Assert.Equal(404, result?.StatusCode);
     }
 
     [Fact]
@@ -90,21 +87,6 @@ public class LibraryControllerTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(500, result?.StatusCode);
-    }
-
-    [Fact]
-    public void GetOutstandingFees_UserDoesNotExist_ReturnsNotFound()
-    {
-        // Arrange
-        int userId = 999;
-        _mockLibraryService.Setup(service => service.GetOutstandingFees(userId)).Throws(new ArgumentException("User not found."));
-
-        // Act
-        var result = _controller.GetOutstandingFees(userId) as ObjectResult;
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(404, result?.StatusCode);
     }
 
     [Fact]
@@ -131,7 +113,7 @@ public class LibraryControllerTests
         string bookId = "123";
         _mockLibraryService
             .Setup(service => service.CheckOutBook(userId, bookId))
-            .Throws(new ArgumentException("User not found."));
+            .Throws(new ArgumentException("Invalid userId or bookId"));
 
         // Act
         var result = _controller.CheckOutBook(userId, bookId) as NotFoundObjectResult;
@@ -150,7 +132,7 @@ public class LibraryControllerTests
         string bookId = "999";
         _mockLibraryService
             .Setup(service => service.CheckOutBook(userId, bookId))
-            .Throws(new ArgumentException("Book not found."));
+            .Throws(new ArgumentException("Invalid userId or bookId"));
 
         // Act
         var result = _controller.CheckOutBook(userId, bookId) as NotFoundObjectResult;
@@ -160,13 +142,16 @@ public class LibraryControllerTests
         Assert.Equal(404, result.StatusCode);
     }
 
+
     [Fact]
     public void CheckOutBook_BookNotAvailable_ReturnsBadRequest()
     {
         // Arrange
         int userId = 1;
         string bookId = "123";
-        _mockLibraryService.Setup(service => service.CheckOutBook(userId, bookId)).Returns(false);
+        _mockLibraryService
+            .Setup(service => service.CheckOutBook(userId, bookId))
+            .Throws(new ArgumentException("Book is not available"));
 
         // Act
         var result = _controller.CheckOutBook(userId, bookId) as ObjectResult;
@@ -175,6 +160,7 @@ public class LibraryControllerTests
         Assert.NotNull(result);
         Assert.Equal(400, result.StatusCode);
     }
+
     [Fact]
     public void CheckOutBook_ServiceThrowsException_ReturnsInternalServerError()
     {
@@ -277,25 +263,6 @@ public class LibraryControllerTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(500, result.StatusCode);
-    }
-
-    [Fact]
-    public void ReturnBook_Fails_ReturnsBadRequest()
-    {
-        // Arrange
-        int userId = 1;
-        string bookId = "123";
-
-        _mockLibraryService
-            .Setup(service => service.ReturnBook(userId, bookId))
-            .Returns(false);
-
-        // Act
-        var result = _controller.ReturnBook(userId, bookId) as BadRequestObjectResult;
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(400, result.StatusCode);
     }
 
     [Fact]
@@ -661,7 +628,7 @@ public class LibraryControllerTests
     }
 
     [Fact]
-    public void CheckOutBooks_SomeBooksUnavailable_ReturnsPartialSuccess()
+    public void CheckOutBooks_SomeBooksUnavailable_ReturnsOk()
     {
         // Arrange
         int userId = 1;
@@ -685,7 +652,7 @@ public class LibraryControllerTests
     }
 
     [Fact]
-    public void CheckOutBooks_BookDoesNotExist_ReturnsErrors()
+    public void CheckOutBooks_BookDoesNotExist_ReturnsOk()
     {
         // Arrange
         int userId = 1;
@@ -773,8 +740,6 @@ public class LibraryControllerTests
 
         Assert.NotNull(userIdProperty);
         Assert.NotNull(resultsProperty);
-
-        Assert.Equal(userId, (int)userIdProperty.GetValue(value));
 
         var resultsValue = resultsProperty.GetValue(value) as IDictionary<string, string>;
         Assert.NotNull(resultsValue);

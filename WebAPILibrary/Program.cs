@@ -50,10 +50,6 @@ namespace WebAPILibrary
             // Delete the database if it exists and then recreate it
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-
-            // Seed data
-
-            // Create Users
             var user1 = new User()
             {
                 Name = "Doe",
