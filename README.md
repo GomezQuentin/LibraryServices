@@ -21,3 +21,6 @@ To get started with the project, follow these steps:
 3. **Run the API**  
    Once the solution is loaded in Visual Studio, run the API. The database will be automatically populated with initial data, allowing you to test the application     
    functionalities right away.
+
+## Documentation
+For a detailed explanation of the project's functionality, design decisions, and test-driven development (TDD) approach, refer to the TDDDocumentation.pdf file included in the repository.
